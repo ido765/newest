@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>build.gradle.kts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+.s1 { color: #bcbec4;}
+.s2 { color: #6aab73;}
+.s3 { color: #2aacb8;}
+.s4 { color: #cf8e6d;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+build.gradle.kts</font>
+</center></td></tr></table>
+<pre><span class="s0">plugins </span><span class="s1">{</span>
+    <span class="s0">id</span><span class="s1">(</span><span class="s2">&quot;com.android.application&quot;</span><span class="s1">)</span>
+    <span class="s0">id</span><span class="s1">(</span><span class="s2">&quot;com.google.gms.google-services&quot;</span><span class="s1">)</span>
+<span class="s1">}</span>
+
+<span class="s0">android </span><span class="s1">{</span>
+    <span class="s0">namespace </span><span class="s1">= </span><span class="s2">&quot;com.example.projprob&quot;</span>
+    <span class="s0">compileSdk </span><span class="s1">= </span><span class="s3">34</span>
+
+    <span class="s0">defaultConfig </span><span class="s1">{</span>
+        <span class="s0">applicationId </span><span class="s1">= </span><span class="s2">&quot;com.example.projprob&quot;</span>
+        <span class="s0">minSdk </span><span class="s1">= </span><span class="s3">24</span>
+        <span class="s0">targetSdk </span><span class="s1">= </span><span class="s3">34</span>
+        <span class="s0">versionCode </span><span class="s1">= </span><span class="s3">1</span>
+        <span class="s0">versionName </span><span class="s1">= </span><span class="s2">&quot;1.0&quot;</span>
+
+        <span class="s0">testInstrumentationRunner </span><span class="s1">= </span><span class="s2">&quot;androidx.test.runner.AndroidJUnitRunner&quot;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">buildTypes </span><span class="s1">{</span>
+        <span class="s0">release </span><span class="s1">{</span>
+            <span class="s0">isMinifyEnabled </span><span class="s1">= </span><span class="s4">false</span>
+            <span class="s0">proguardFiles</span><span class="s1">(</span><span class="s0">getDefaultProguardFile</span><span class="s1">(</span><span class="s2">&quot;proguard-android-optimize.txt&quot;</span><span class="s1">), </span><span class="s2">&quot;proguard-rules.pro&quot;</span><span class="s1">)</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s0">compileOptions </span><span class="s1">{</span>
+        <span class="s0">sourceCompatibility </span><span class="s1">= </span><span class="s0">JavaVersion</span><span class="s1">.</span><span class="s0">VERSION_1_8</span>
+        <span class="s0">targetCompatibility </span><span class="s1">= </span><span class="s0">JavaVersion</span><span class="s1">.</span><span class="s0">VERSION_1_8</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s0">dependencies </span><span class="s1">{</span>
+
+    <span class="s0">implementation</span><span class="s1">(</span><span class="s2">&quot;androidx.appcompat:appcompat:1.7.0&quot;</span><span class="s1">)</span>
+    <span class="s0">implementation</span><span class="s1">(</span><span class="s2">&quot;com.google.android.material:material:1.12.0&quot;</span><span class="s1">)</span>
+    <span class="s0">implementation</span><span class="s1">(</span><span class="s2">&quot;androidx.constraintlayout:constraintlayout:2.1.4&quot;</span><span class="s1">)</span>
+    <span class="s0">implementation</span><span class="s1">(</span><span class="s2">&quot;com.google.firebase:firebase-database:21.0.0&quot;</span><span class="s1">)</span>
+    <span class="s0">testImplementation</span><span class="s1">(</span><span class="s2">&quot;junit:junit:4.13.2&quot;</span><span class="s1">)</span>
+    <span class="s0">androidTestImplementation</span><span class="s1">(</span><span class="s2">&quot;androidx.test.ext:junit:1.1.5&quot;</span><span class="s1">)</span>
+    <span class="s0">androidTestImplementation</span><span class="s1">(</span><span class="s2">&quot;androidx.test.espresso:espresso-core:3.5.1&quot;</span><span class="s1">)</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
