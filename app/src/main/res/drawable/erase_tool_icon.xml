@@ -2,11 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="#4CAF50" /> <!-- צבע ירוק בהיר -->
+            <solid android:color="#757575" />
             <corners android:radius="20dp" />
         </shape>
     </item>
     <item
-        android:drawable="@drawable/draw_pencil_tool"
-    android:gravity="center" />
+        android:drawable="@drawable/draw_erase_tool"
+        android:gravity="center" />
 </layer-list>

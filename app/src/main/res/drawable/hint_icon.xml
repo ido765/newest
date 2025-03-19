@@ -2,11 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="#4CAF50" />
+            <solid android:color="#3F51B5" />
             <corners android:radius="20dp" />
         </shape>
     </item>
     <item
-        android:drawable="@drawable/draw_pencil_tool"
+        android:drawable="@drawable/hint_bulb_icon"
         android:gravity="center" />
 </layer-list>

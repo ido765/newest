@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button giveupbtn, hintBtn;
+    private Button giveupbtn;
+    private ImageButton hintBtn; // שינוי ל-ImageButton
     private ImageButton modeBtn;
     private ConstraintLayout gamelayout;
     private String size = "4x4";
@@ -35,7 +37,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init() {
         giveupbtn = findViewById(R.id.giveupbtn);
-        hintBtn = findViewById(R.id.hint_btn);
+        hintBtn = findViewById(R.id.hint_btn); // עכשיו ImageButton
         modeBtn = findViewById(R.id.mode_btn);
         giveupbtn.setOnClickListener(this);
         hintBtn.setOnClickListener(this);
@@ -46,12 +48,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void updateModeButton() {
         if (isEraseMode) {
-            modeBtn.setImageResource(R.drawable.draw_erase_tool); // התאמה ל-XML
+            modeBtn.setImageResource(R.drawable.erase_tool_icon); // תיקון שם המשאב
             modeBtn.setBackgroundTintList(getResources().getColorStateList(android.R.color.darker_gray));
         } else {
-            modeBtn.setImageResource(R.drawable.pencil_tool_icon); // התאמה ל-XML
+            modeBtn.setImageResource(R.drawable.pencil_tool_icon);
             modeBtn.setBackgroundTintList(getResources().getColorStateList(android.R.color.holo_green_light));
         }
+        // אנימציה
+        modeBtn.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100).withEndAction(() -> {
+            modeBtn.animate().scaleX(1f).scaleY(1f).setDuration(100).start();
+        }).start();
+    }
+
+    private void updateHintButton() {
+        // TODO: כאן תוכל להוסיף לוגיקה נוספת לרמזים בעתיד
+        Toast.makeText(this, "Hint clicked!", Toast.LENGTH_SHORT).show();
+        // אנימציה דומה לזו של modeBtn
+        hintBtn.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100).withEndAction(() -> {
+            hintBtn.animate().scaleX(1f).scaleY(1f).setDuration(100).start();
+        }).start();
     }
 
     private int IntSizer(String size) {
@@ -62,7 +77,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             case "6x6": return 6;
             case "7x7": return 7;
             default: return 4;
-
         }
     }
 
@@ -75,7 +89,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             updateModeButton();
             board.setMode(isEraseMode ? Board.MODE_ERASE : Board.MODE_PENCIL);
         } else if (v == hintBtn) {
-            // TODO: הוסף לוגיקה לרמזים
+            updateHintButton(); // קריאה לפונקציה החדשה
         }
     }
 
@@ -112,6 +126,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         linearLayout.setBackgroundColor(colorRes);
         int textColor = color.equalsIgnoreCase("white") ? Color.BLACK : Color.WHITE;
         giveupbtn.setTextColor(textColor);
-        hintBtn.setTextColor(textColor);
+        // הסרנו את hintBtn.setTextColor כי זה ImageButton
     }
 }
