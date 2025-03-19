@@ -7,18 +7,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <!-- LinearLayout עבור הלבבות -->
+    <LinearLayout
+        android:id="@+id/hearts_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Level 1"
-        android:textColor="@color/text_white"
-        android:textSize="24sp"
+        android:orientation="horizontal"
         android:layout_marginTop="10dp"
-        android:id="@+id/level_text"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <ImageView
+            android:id="@+id/heart1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/heart_icon"
+            android:layout_marginEnd="5dp"/>
+
+        <ImageView
+            android:id="@+id/heart2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/heart_icon"
+            android:layout_marginEnd="5dp"/>
+
+        <ImageView
+            android:id="@+id/heart3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/heart_icon"/>
+    </LinearLayout>
+
+    <!-- LinearLayout עבור הלוח -->
     <LinearLayout
         android:id="@+id/game"
         android:layout_width="match_parent"
@@ -26,9 +47,10 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/level_text"
+        app:layout_constraintTop_toBottomOf="@id/hearts_container"
         app:layout_constraintBottom_toTopOf="@id/mode_btn"/>
 
+    <!-- ImageButton עבור החלפת מצבים -->
     <ImageButton
         android:id="@+id/mode_btn"
         android:layout_width="60dp"
@@ -41,6 +63,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- LinearLayout עבור הכפתורים התחתונים -->
     <LinearLayout
         android:id="@+id/button_container"
         android:layout_width="match_parent"

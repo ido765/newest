@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ public class Board extends View {
     private int[] currentRowSums;
     private int[] currentColSums;
     private float offsetX, offsetY;
+    private Paint circlePaint;
+    private GameActivity gameActivity; // משתנה לגישה ל-GameActivity
 
     public Board(Context context, int size) {
         super(context);
@@ -29,7 +32,17 @@ public class Board extends View {
         colSums = new int[this.size];
         currentRowSums = new int[this.size];
         currentColSums = new int[this.size];
+
+        circlePaint = new Paint();
+        circlePaint.setColor(Color.BLACK);
+        circlePaint.setStyle(Paint.Style.STROKE);
+        circlePaint.setStrokeWidth(5);
+
         new Thread(this::init).start();
+    }
+
+    public void setGameActivity(GameActivity gameActivity) {
+        this.gameActivity = gameActivity;
     }
 
     public void setMode(int mode) {
@@ -151,10 +164,7 @@ public class Board extends View {
         paint.setTextSize(arr[0][0].height / 2);
         paint.setAntiAlias(true);
 
-        paint.setColor(Color.WHITE);
-        paint.setTextSize(40);
-        canvas.drawText("Level 1", getWidth() / 2 - 50, 40, paint);
-        paint.setTextSize(arr[0][0].height / 2);
+        // הסרנו את הציור של "Level 1"
 
         for (int i = 0; i < size; i++) {
             for (int k = 0; k < size; k++) {
@@ -188,8 +198,63 @@ public class Board extends View {
                     paint.setColor(Color.BLACK);
                     canvas.drawText(String.valueOf(sq.getNum()), x + sq.width / 2 - paint.measureText(String.valueOf(sq.getNum())) / 2, y + sq.height / 2 + paint.getTextSize() / 3, paint);
                 }
+
+                if (sq.isMarked()) {
+                    float centerX = x + sq.width / 2;
+                    float centerY = y + sq.height / 2;
+                    float radius = Math.min(sq.width, sq.height) / 3;
+                    canvas.drawCircle(centerX, centerY, radius, circlePaint);
+                }
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            float touchX = event.getX();
+            float touchY = event.getY();
+
+            for (int i = 0; i < size; i++) {
+                for (int k = 0; k < size; k++) {
+                    Square sq = arr[i][k];
+                    float x = offsetX + k * sq.width;
+                    float y = offsetY + i * sq.height;
+
+                    if (touchX >= x && touchX <= x + sq.width && touchY >= y && touchY <= y + sq.height) {
+                        if (i > 0 && k > 0) {
+                            boolean shouldBeMarked = sq.shouldBeUsed();
+                            boolean shouldBeErased = !sq.shouldBeUsed();
+
+                            if (mode == MODE_ERASE) {
+                                if (shouldBeErased) {
+                                    sq.setPenciled(true);
+                                    sq.setMarked(false);
+                                } else {
+                                    sq.setPenciled(false);
+                                    sq.setMarked(true);
+                                    gameActivity.onPlayerMistake(); // השחקן טעה
+                                }
+                            } else if (mode == MODE_PENCIL) {
+                                if (shouldBeMarked) {
+                                    sq.setPenciled(false);
+                                    sq.setMarked(true);
+                                } else {
+                                    sq.setPenciled(true);
+                                    sq.setMarked(false);
+                                    gameActivity.onPlayerMistake(); // השחקן טעה
+                                }
+                            }
+                            calculateCurrentSums();
+                            invalidate();
+                        }
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+        return super.onTouchEvent(event);
     }
 
     @Override

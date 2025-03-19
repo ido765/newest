@@ -3,7 +3,7 @@ package com.example.projprob;
 public class Square {
     public int height, width;
     private int num;
-    private boolean shouldBeUsed, pressed, isCorrect, isLocked, isPenciled;
+    private boolean shouldBeUsed, pressed, isCorrect, isLocked, isPenciled, isMarked; // הוספת isMarked
     private int row, col;
 
     public Square(int height, int width, int num, int row, int col, boolean shouldBeUsed,
@@ -18,6 +18,7 @@ public class Square {
         this.isCorrect = isCorrect;
         this.isLocked = isLocked;
         this.isPenciled = false;
+        this.isMarked = false; // אתחול isMarked
     }
 
     public int getNum() { return num; }
@@ -25,6 +26,8 @@ public class Square {
     public void setPressed(boolean pressed) { this.pressed = pressed; }
     public boolean isPenciled() { return isPenciled; }
     public void setPenciled(boolean penciled) { this.isPenciled = penciled; }
+    public boolean isMarked() { return isMarked; } // getter עבור isMarked
+    public void setMarked(boolean marked) { this.isMarked = marked; } // setter עבור isMarked
     public boolean isCorrect() { return isCorrect; }
     public boolean isLocked() { return isLocked; }
     public int getRow() { return row; }
