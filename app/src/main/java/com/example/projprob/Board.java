@@ -164,7 +164,6 @@ public class Board extends View {
         paint.setTextSize(arr[0][0].height / 2);
         paint.setAntiAlias(true);
 
-        // הסרנו את הציור של "Level 1"
 
         for (int i = 0; i < size; i++) {
             for (int k = 0; k < size; k++) {

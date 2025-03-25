@@ -24,7 +24,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private ConstraintLayout SettingsLayout;
 
     // Available options for spinners
-    String[] sizes = {"choose grid size", "3x3", "4x4", "5x5", "6x6", "7x7"}; // הוספתי "3x3"
+    String[] sizes = {"choose grid size", "3x3", "4x4", "5x5", "6x6", "7x7"};
     String[] colors = {"choose background color", "Black", "White", "Blue", "Red", "Green"};
 
     @Override
