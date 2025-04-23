@@ -9,6 +9,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Board extends View {
@@ -23,7 +25,7 @@ public class Board extends View {
     private int[] currentColSums;
     private float offsetX, offsetY;
     private Paint circlePaint;
-    private GameActivity gameActivity; // משתנה לגישה ל-GameActivity
+    private GameActivity gameActivity;
 
     public Board(Context context, int size) {
         super(context);
@@ -81,6 +83,7 @@ public class Board extends View {
                 }
             }
         }
+
         for (int k = 1; k < size; k++) {
             boolean hasSelected = false;
             for (int i = 1; i < size; i++) {
@@ -106,6 +109,7 @@ public class Board extends View {
             }
             rowSums[i] = sum;
         }
+
         for (int k = 1; k < size; k++) {
             int sum = 0;
             for (int i = 1; i < size; i++) {
@@ -121,21 +125,65 @@ public class Board extends View {
         for (int i = 1; i < size; i++) {
             int sum = 0;
             for (int k = 1; k < size; k++) {
-                if (arr[i][k].shouldBeUsed() && !arr[i][k].isPenciled()) {
+                if (arr[i][k].shouldBeUsed() && !arr[i][k].isErased()) { // שינוי מ-isPenciled ל-isErased
                     sum += arr[i][k].getNum();
                 }
             }
             currentRowSums[i] = sum;
         }
+
         for (int k = 1; k < size; k++) {
             int sum = 0;
             for (int i = 1; i < size; i++) {
-                if (arr[i][k].shouldBeUsed() && !arr[i][k].isPenciled()) {
+                if (arr[i][k].shouldBeUsed() && !arr[i][k].isErased()) { // שינוי מ-isPenciled ל-isErased
                     sum += arr[i][k].getNum();
                 }
             }
             currentColSums[k] = sum;
         }
+    }
+
+    public boolean provideHint() {
+        Random rand = new Random();
+        List<Square> unpressedSquares = new ArrayList<>();
+
+        // מציאת כל הריבועים שלא נלחצו (ולא בשורה/עמודה 0)
+        for (int i = 1; i < size; i++) {
+            for (int k = 1; k < size; k++) {
+                Square sq = arr[i][k];
+                if (!sq.isPressed()) {
+                    unpressedSquares.add(sq);
+                }
+            }
+        }
+
+        // אם אין ריבועים שלא נלחצו, מחזירים false
+        if (unpressedSquares.isEmpty()) {
+            return false;
+        }
+
+        // בחירת ריבוע רנדומלי מהרשימה
+        Square hintSquare = unpressedSquares.get(rand.nextInt(unpressedSquares.size()));
+
+        // סימון הריבוע כלחוץ
+        hintSquare.setPressed(true);
+
+        // ביצוע הפעולה הנכונה בהתאם ל-shouldBeUsed
+        boolean shouldBeMarked = hintSquare.shouldBeUsed();
+        boolean shouldBeErased = !hintSquare.shouldBeUsed();
+
+        if (shouldBeMarked) {
+            hintSquare.setErased(false); // שינוי מ-setPenciled ל-setErased
+            hintSquare.setSelected(true); // שינוי מ-setMarked ל-setSelected
+        } else if (shouldBeErased) {
+            hintSquare.setErased(true); // שינוי מ-setPenciled ל-setErased
+            hintSquare.setSelected(false); // שינוי מ-setMarked ל-setSelected
+        }
+
+        // עדכון הסכומים הנוכחיים והציור מחדש
+        calculateCurrentSums();
+        invalidate();
+        return true;
     }
 
     public void updateSquareSizes() {
@@ -164,7 +212,6 @@ public class Board extends View {
         paint.setTextSize(arr[0][0].height / 2);
         paint.setAntiAlias(true);
 
-
         for (int i = 0; i < size; i++) {
             for (int k = 0; k < size; k++) {
                 Square sq = arr[i][k];
@@ -174,7 +221,7 @@ public class Board extends View {
                 paint.setStyle(Paint.Style.FILL);
                 if (i == 0 || k == 0) {
                     paint.setColor(Color.BLUE);
-                } else if (sq.isPenciled()) {
+                } else if (sq.isErased()) { // שינוי מ-isPenciled ל-isErased
                     paint.setColor(Color.LTGRAY);
                 } else {
                     paint.setColor(Color.WHITE);
@@ -198,7 +245,7 @@ public class Board extends View {
                     canvas.drawText(String.valueOf(sq.getNum()), x + sq.width / 2 - paint.measureText(String.valueOf(sq.getNum())) / 2, y + sq.height / 2 + paint.getTextSize() / 3, paint);
                 }
 
-                if (sq.isMarked()) {
+                if (sq.isSelected()) { // שינוי מ-isMarked ל-isSelected
                     float centerX = x + sq.width / 2;
                     float centerY = y + sq.height / 2;
                     float radius = Math.min(sq.width, sq.height) / 3;
@@ -222,26 +269,27 @@ public class Board extends View {
 
                     if (touchX >= x && touchX <= x + sq.width && touchY >= y && touchY <= y + sq.height) {
                         if (i > 0 && k > 0) {
+                            sq.setPressed(true); // סימון הריבוע כלחוץ
                             boolean shouldBeMarked = sq.shouldBeUsed();
                             boolean shouldBeErased = !sq.shouldBeUsed();
 
                             if (mode == MODE_ERASE) {
                                 if (shouldBeErased) {
-                                    sq.setPenciled(true);
-                                    sq.setMarked(false);
+                                    sq.setErased(true); // שינוי מ-setPenciled ל-setErased
+                                    sq.setSelected(false); // שינוי מ-setMarked ל-setSelected
                                 } else {
-                                    sq.setPenciled(false);
-                                    sq.setMarked(true);
-                                    gameActivity.onPlayerMistake(); // השחקן טעה
+                                    sq.setErased(false); // שינוי מ-setPenciled ל-setErased
+                                    sq.setSelected(true); // שינוי מ-setMarked ל-setSelected
+                                    gameActivity.onPlayerMistake();
                                 }
                             } else if (mode == MODE_PENCIL) {
                                 if (shouldBeMarked) {
-                                    sq.setPenciled(false);
-                                    sq.setMarked(true);
+                                    sq.setErased(false); // שינוי מ-setPenciled ל-setErased
+                                    sq.setSelected(true); // שינוי מ-setMarked ל-setSelected
                                 } else {
-                                    sq.setPenciled(true);
-                                    sq.setMarked(false);
-                                    gameActivity.onPlayerMistake(); // השחקן טעה
+                                    sq.setErased(true); // שינוי מ-setPenciled ל-setErased
+                                    sq.setSelected(false); // שינוי מ-setMarked ל-setSelected
+                                    gameActivity.onPlayerMistake();
                                 }
                             }
                             calculateCurrentSums();

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card_background"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/lose_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="24dp"
+        android:text="הפסדת! נגמרו לך הלבבות."
+        android:textColor="@color/text_color"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/lose_negative_btn"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="8dp"
+        android:text="חזרה לתפריט"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:elevation="6dp"
+        android:backgroundTint="@color/danger_button"
+        android:textColor="@color/button_text"
+        app:layout_constraintEnd_toStartOf="@id/lose_positive_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lose_title"
+        app:layout_constraintWidth_percent="0.45" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/lose_positive_btn"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:text="נסה שוב"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:elevation="6dp"
+        android:backgroundTint="@color/secondary_button"
+        android:textColor="@color/button_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/lose_negative_btn"
+        app:layout_constraintTop_toBottomOf="@id/lose_title"
+        app:layout_constraintWidth_percent="0.45" />
+</androidx.constraintlayout.widget.ConstraintLayout>

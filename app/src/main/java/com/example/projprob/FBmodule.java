@@ -1,6 +1,7 @@
 package com.example.projprob;
 
 import androidx.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -9,8 +10,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FBmodule {
     MainActivity mainActivity;
-    GameActivity gameActivity;
-
     private static final String SIZE_KEY = "size";
     private static final String COLOR_KEY = "backgroundColor";
 
@@ -30,7 +29,6 @@ public class FBmodule {
                 String size = snapshot.getValue(String.class);
                 if (size != null) {
                     mainActivity.updateSize(size);
-
                 }
             }
 
@@ -48,8 +46,6 @@ public class FBmodule {
                 String color = snapshot.getValue(String.class);
                 if (color != null) {
                     mainActivity.updateBackgroundColor(color);
-
-
                 }
             }
 

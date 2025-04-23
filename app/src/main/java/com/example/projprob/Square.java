@@ -3,7 +3,7 @@ package com.example.projprob;
 public class Square {
     public int height, width;
     private int num;
-    private boolean shouldBeUsed, pressed, isCorrect, isLocked, isPenciled, isMarked; // הוספת isMarked
+    private boolean shouldBeUsed, pressed, isCorrect, isLocked, isErased, isSelected; // שינוי שמות
     private int row, col;
 
     public Square(int height, int width, int num, int row, int col, boolean shouldBeUsed,
@@ -17,17 +17,17 @@ public class Square {
         this.pressed = pressed;
         this.isCorrect = isCorrect;
         this.isLocked = isLocked;
-        this.isPenciled = false;
-        this.isMarked = false; // אתחול isMarked
+        this.isErased = false; // שינוי מ-isPenciled ל-isErased
+        this.isSelected = false; // שינוי מ-isMarked ל-isSelected
     }
 
     public int getNum() { return num; }
     public boolean isPressed() { return pressed; }
     public void setPressed(boolean pressed) { this.pressed = pressed; }
-    public boolean isPenciled() { return isPenciled; }
-    public void setPenciled(boolean penciled) { this.isPenciled = penciled; }
-    public boolean isMarked() { return isMarked; } // getter עבור isMarked
-    public void setMarked(boolean marked) { this.isMarked = marked; } // setter עבור isMarked
+    public boolean isErased() { return isErased; } // שינוי שם
+    public void setErased(boolean erased) { this.isErased = erased; } // שינוי שם
+    public boolean isSelected() { return isSelected; } // שינוי שם
+    public void setSelected(boolean selected) { this.isSelected = selected; } // שינוי שם
     public boolean isCorrect() { return isCorrect; }
     public boolean isLocked() { return isLocked; }
     public int getRow() { return row; }

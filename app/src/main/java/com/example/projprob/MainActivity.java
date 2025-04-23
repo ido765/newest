@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,12 +47,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Intent data = result.getData();
                         String size = data.getStringExtra("size");
                         String color = data.getStringExtra("color");
-
                         if (size != null) {
                             Toast.makeText(MainActivity.this, "Size selected: " + size, Toast.LENGTH_SHORT).show();
                             fbmodule.changeSizeInFirebase(size);
                         }
-
                         if (color != null) {
                             Toast.makeText(MainActivity.this, "Color selected: " + color, Toast.LENGTH_SHORT).show();
                             fbmodule.changeColorInFirebase(color);
@@ -65,9 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateSize(String size) {
-        // Update UI or game logic based on size
         StaticSize = size;
-        // You can add additional logic here to handle size changes
     }
 
     public void updateBackgroundColor(String color) {
@@ -94,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         mainLayout.setBackgroundColor(colorRes);
 
-        // Update color for all buttons to ensure visibility
         int textColor = color.equalsIgnoreCase("white") ? Color.BLACK : Color.WHITE;
         btntogame.setTextColor(textColor);
         btntoinst.setTextColor(textColor);
@@ -104,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         Intent intent = null;
-
         if (btntogame == v) {
             intent = new Intent(this, GameActivity.class);
         } else if (btntoinst == v) {
@@ -112,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (btntoset == v) {
             intent = new Intent(this, SettingsActivity.class);
         }
-
         if (intent != null) {
             activityResultLauncher.launch(intent);
         }

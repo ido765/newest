@@ -5,11 +5,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
@@ -20,9 +23,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private String size = "4x4";
     private int IntSize = 4;
     private Board board;
-    private boolean isEraseMode = true;
+    private boolean isEraseMode = false;
     private ImageView heart1, heart2, heart3;
-    private int heartsRemaining = 3; // מספר הלבבות שנותרו
+    private int heartsRemaining = 3;
+    private TextView timerText;
+    private Handler timerHandler;
+    private Runnable timerRunnable;
+    private int secondsElapsed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +40,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         IntSize = IntSizer(size);
 
         board = new Board(this, IntSize);
-        board.setGameActivity(this); // העברת ה-GameActivity ל-Board
+        board.setGameActivity(this);
         LinearLayout linearLayout = findViewById(R.id.game);
         linearLayout.addView(board);
         updateBackgroundColors();
+        startTimer();
     }
 
     private void init() {
@@ -46,11 +54,41 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         heart1 = findViewById(R.id.heart1);
         heart2 = findViewById(R.id.heart2);
         heart3 = findViewById(R.id.heart3);
+        timerText = findViewById(R.id.timer_text);
         giveupbtn.setOnClickListener(this);
         hintBtn.setOnClickListener(this);
         modeBtn.setOnClickListener(this);
         gamelayout = findViewById(R.id.game_layout);
         updateModeButton();
+
+        timerHandler = new Handler(Looper.getMainLooper());
+        timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                secondsElapsed++;
+                updateTimerText();
+                timerHandler.postDelayed(this, 1000);
+            }
+        };
+    }
+
+    private void startTimer() {
+        secondsElapsed = 0;
+        updateTimerText();
+        timerHandler.post(timerRunnable);
+    }
+
+    private void updateTimerText() {
+        int minutes = secondsElapsed / 60;
+        int seconds = secondsElapsed % 60;
+        String timeFormatted = String.format("%02d:%02d", minutes, seconds);
+        timerText.setText(timeFormatted);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timerHandler.removeCallbacks(timerRunnable);
     }
 
     private void updateModeButton() {
@@ -67,7 +105,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateHintButton() {
-        Toast.makeText(this, "Hint clicked!", Toast.LENGTH_SHORT).show();
+        boolean hintProvided = board.provideHint();
+        if (hintProvided) {
+            Toast.makeText(this, "רמז: ריבוע נפתח!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "לא נותרו ריבועים לפתיחה!", Toast.LENGTH_SHORT).show();
+        }
         hintBtn.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100).withEndAction(() -> {
             hintBtn.animate().scaleX(1f).scaleY(1f).setDuration(100).start();
         }).start();
@@ -130,9 +173,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         linearLayout.setBackgroundColor(colorRes);
         int textColor = color.equalsIgnoreCase("white") ? Color.BLACK : Color.WHITE;
         giveupbtn.setTextColor(textColor);
+        timerText.setTextColor(textColor);
     }
 
-    // שיטה שתיקרא על ידי Board כאשר השחקן טועה
     public void onPlayerMistake() {
         if (heartsRemaining > 0) {
             heartsRemaining--;

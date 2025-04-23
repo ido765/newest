@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" />
+    <string name="insts">
+Game Objective:\n
+        In the Connect to Goal game, you must remove numbers from the board so that the sum of the remaining numbers in each row and column matches the target numbers shown on the side of the board.\n\n
+        Gameplay:\n
+        A board filled with numbers is displayed.\n
+        On the left side of each row and at the top of each column, a target number is shown.\n
+        You need to remove numbers from the board so that the sum of the remaining numbers in each row and column equals its target number.\n
+        When all rows and columns meet the conditions, the game is successfully completed.\n\n
+        Additional Rules:\n
+        You can remove numbers as you wish, but be mindful of the balance between rows and columns.\n
+        If a mistake is made, the system will automatically correct it and deduct a life.\n
+        You have three lives.\n
+        The difficulty level increases as the board size grows.\n\n
+        Tips for Efficient Solving:\n
+        Start with rows and columns that have small target numbers, as they may hint at which numbers must be removed.\n
+        Try to identify numbers that must remain to reach the target sum.
+    </string>
+</resources>

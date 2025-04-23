@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -23,7 +24,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private String selectedSize;
     private ConstraintLayout SettingsLayout;
 
-    // Available options for spinners
     String[] sizes = {"choose grid size", "3x3", "4x4", "5x5", "6x6", "7x7"};
     String[] colors = {"choose background color", "Black", "White", "Blue", "Red", "Green"};
 
@@ -61,8 +61,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(SettingsActivity.this, "No size selected",
-                        Toast.LENGTH_SHORT).show();
+                // Not needed since Spinner always has a default value
             }
         });
 
@@ -84,8 +83,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(SettingsActivity.this, "No color selected",
-                        Toast.LENGTH_SHORT).show();
+                // Not needed since Spinner always has a default value
             }
         });
     }
@@ -105,9 +103,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                         .setValue(selectedSize);
             }
 
-            String selectedColor = colorSpinner.getSelectedItem() != null ?
-                    colorSpinner.getSelectedItem().toString() : null;
-            if (selectedColor != null && !selectedColor.equals("choose background color")) {
+            String selectedColor = colorSpinner.getSelectedItem().toString();
+            if (!selectedColor.equals("choose background color")) {
                 FirebaseDatabase.getInstance().getReference()
                         .child("backgroundColor")
                         .setValue(selectedColor);
@@ -119,7 +116,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     public void updateBackgroundColors() {
         int colorRes;
-        String color = MainActivity.staticColorRes;
+        String color = MainActivity.staticColorRes != null ? MainActivity.staticColorRes : "black";
 
         switch (color.toLowerCase()) {
             case "black":
